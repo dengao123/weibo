@@ -68,6 +68,7 @@ class UsersController extends Controller
     //编辑
     public function update(Request $request, User $user)
     {
+         $this->authorize('update',$user);
         $this->validate($request,[
             'name' => 'required|max:50',
             'password' => 'nullable|confirmed|min:6'
@@ -88,9 +89,12 @@ class UsersController extends Controller
     }
 
     //删除
-    public function delete()
+    public function destroy(User $user)
     {
-
+        $this->authorize('destroy',$user);
+        $user->delete();
+        session()->flash('success','删除成功');
+        return redirect()->back();
     }
 
 
