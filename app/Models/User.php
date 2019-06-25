@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\Status;
 
 class User extends Authenticatable
 {
@@ -52,7 +53,11 @@ class User extends Authenticatable
     //获取所有微博
     public function feed()
     {
-        return $this->statuses()->orderBy('created_at','desc');
+        $user_ids = $this->followings->pluck('id')->toArray();;
+        array_push($user_ids,$this->id);
+        return Status::whereIn('user_id',$user_ids)
+                               ->with('user')
+                               ->orderBy('created_at','desc');
     }
 
     //获取粉丝
