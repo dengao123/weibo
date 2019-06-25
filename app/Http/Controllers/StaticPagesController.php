@@ -3,6 +3,7 @@
 
  use Illuminate\Http\Request;
  use Auth;
+ use App\Models\User;
 
 
  class StaticPagesController extends Controller
@@ -16,7 +17,7 @@
         return view('static_pages/home',compact('feed_items'));
     }
 
-    public function about()
+    public function about(User $user)
     {
         return view('static_pages/about');
     }
